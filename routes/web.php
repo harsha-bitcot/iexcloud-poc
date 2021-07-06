@@ -18,6 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/company/find/{ticker}', 'App\Http\Controllers\CompanyController@findCompany');
+
 Route::get('/test/{ticker}', 'App\Http\Controllers\CompanyController@test');
+Route::get('/market', 'App\Http\Controllers\CompanyController@market');
 Route::get('/historic/{ticker}', 'App\Http\Controllers\CompanyController@historic');
 

@@ -15,8 +15,21 @@ use Illuminate\Support\Facades\Http;
 
 class iexcloud
 {
+    public static function getCompanyByTicker($ticker){
+        $url = 'https://cloud.iexapis.com/stable/stock/'. $ticker .'/company?token='. ENV('IEXCLOUD_API_KEY');
+        $data =  Http::get($url);
+        return $data->json();
+    }
+
     public static function previousDayPrice($ticker){
         $url = 'https://cloud.iexapis.com/stable/stock/'. $ticker .'/previous?token='. ENV('IEXCLOUD_API_KEY');
+        $data =  Http::get($url);
+        return $data->json();
+    }
+
+    public static function previousDayMarket(){
+        return null; // temp disabling this credit guzzler
+        $url = 'https://cloud.iexapis.com/stable/stock/market/previous?token='. ENV('IEXCLOUD_API_KEY');
         $data =  Http::get($url);
         return $data->json();
     }

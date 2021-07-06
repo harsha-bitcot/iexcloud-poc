@@ -15,6 +15,16 @@ class CreateCompaniesTable extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
+            $table->string('symbol')->unique();
+            $table->string('companyName');
+            $table->string('exchange');
+            $table->string('industry');
+            $table->string('website');
+            $table->text('description');
+            $table->string('sector');
+            $table->string('city');
+            $table->string('state');
+            $table->string('country');
             $table->timestamps();
         });
     }
