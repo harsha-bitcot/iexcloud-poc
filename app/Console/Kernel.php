@@ -31,9 +31,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('iex:previousDay')->withoutOverlapping(15)->everyMinute()->when(function () {
             return company::where('updateDailyData', true)->count()>0;
         });
-
-
-
+        $schedule->command('iex:checkForNewData')->hourlyAt(20)->days([2, 3, 4, 5, 6])->between('8:00', '11:30')->when(function () {
+            return !Cache::has('iexDailyUpdated');
+        });
     }
 
     /**
