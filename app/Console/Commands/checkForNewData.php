@@ -6,6 +6,7 @@ use Exception;
 use App\Models\company;
 use App\Utils\iexcloud;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Console\Command;
 
 class checkForNewData extends Command
@@ -57,7 +58,7 @@ class checkForNewData extends Command
             }
             $iexDate = Carbon::createFromFormat('Y-m-d', $data['date']);
             $dbLatestEntry = $company->data()->latest()->first();
-            $dbDate = $dbLatestEntry == null? $iexDate->subDay() : Carbon::createFromFormat('Y-m-d', $dbLatestEntry->date);
+            $dbDate = $dbLatestEntry == null? $iexDate->copy()->subDay() : Carbon::createFromFormat('Y-m-d', $dbLatestEntry->date);
             if ($iexDate->isAfter($dbDate)){
                 try {
                     company::where('status', true)->update(['updateDailyData' => true]);
@@ -66,6 +67,7 @@ class checkForNewData extends Command
                     continue;
                 }
                 $result = 'db-updated';
+                Cache::put('iexDailyUpdated', true, now()->addHours(8));
                 break;
             }
         }
