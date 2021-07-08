@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\company;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +14,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\getPreviousDayPrice::class,
+        Commands\checkForNewData::class
     ];
 
     /**
@@ -25,6 +27,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->command('iex:previousDay')->withoutOverlapping(5)->when(function () {
+            return company::where('updateDailyData', true)->count()>0;
+        });
+
     }
 
     /**

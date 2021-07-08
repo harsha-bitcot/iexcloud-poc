@@ -15,6 +15,27 @@ class CreateDailyDataTable extends Migration
     {
         Schema::create('daily_data', function (Blueprint $table) {
             $table->id();
+            $table->string('company_symbol');
+            $table->date('date');
+            $table->decimal('close', $precision = 10, $scale = 3);
+            $table->decimal('high', $precision = 10, $scale = 3);
+            $table->decimal('low', $precision = 10, $scale = 3);
+            $table->decimal('open', $precision = 10, $scale = 3);
+            $table->bigInteger('volume');
+            $table->decimal('changeOverTime', $precision = 17, $scale = 15);
+            $table->decimal('marketChangeOverTime', $precision = 17, $scale = 15);
+            $table->decimal('uOpen', $precision = 10, $scale = 3);
+            $table->decimal('uClose', $precision = 10, $scale = 3);
+            $table->decimal('uHigh', $precision = 10, $scale = 3);
+            $table->decimal('uLow', $precision = 10, $scale = 3);
+            $table->bigInteger('uVolume');
+            $table->decimal('fOpen', $precision = 10, $scale = 3);
+            $table->decimal('fClose', $precision = 10, $scale = 3);
+            $table->decimal('fHigh', $precision = 10, $scale = 3);
+            $table->decimal('fLow', $precision = 10, $scale = 3);
+            $table->bigInteger('fVolume');
+            $table->decimal('change', $precision = 10, $scale = 3);
+            $table->decimal('changePercent', $precision = 8, $scale = 4);
             $table->timestamps();
         });
     }
