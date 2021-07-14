@@ -46,7 +46,7 @@ class getPreviousDayPrice extends Command
             $this->info('No companies are marked for update');
             return true;
         }
-        $tickers = $companies->pluck('symbol');
+        $tickers = $companies->pluck('symbol')->toArray();
         $batchData = iexcloud::BatchPreviousDayPrice($tickers);
         if ($batchData == null){
             $this->error('No data found with the given tickers');

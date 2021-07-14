@@ -19,4 +19,8 @@ class company extends Model
         return $this->hasMany(dailyData::class);
     }
 
+    public function dataImport()
+    {
+        return $this->hasMany(dataImport::class);
+    }
 }

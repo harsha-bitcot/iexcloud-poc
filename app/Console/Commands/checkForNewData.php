@@ -42,11 +42,6 @@ class checkForNewData extends Command
      */
     public function handle()
     {
-        //todo
-        // think once about below comment ... check if running the cron 3 times per day suffices
-        // setup a cache value to store the status of the day (to be expired in 6 hours)
-        // starting from the 'previous days data' update time in iexcloud, setup a cron to run until next 6 hours
-        // hit this every 2 hours until a satisfied response(db-updated) is saved in the cache
         $companies = company::where('status', true)->where('updateDailyData', 0)->inRandomOrder()->limit(5)->get();
         $this->info('Started checking for new daily data with: '. $companies->pluck('symbol'));
         $result = 'no-updates';

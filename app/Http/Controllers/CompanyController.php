@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\company;
 use App\Models\dailyData;
+use App\Models\dataImport;
 use Illuminate\Http\Request;
 use App\Utils\iexcloud;
 
@@ -46,6 +47,12 @@ class CompanyController extends Controller
                     'state' => $company['state'],
                     'country' => $company['country']
                 ]);
+                $company->dataImport()->saveMany([
+//                    new dataImport(['range' => 'H12020']),
+//                    new dataImport(['range' => 'H22020']),
+//                    new dataImport(['range' => 'H120201']),
+                    new dataImport(['range' => 'H22021']),
+                ]);
             }
         }
         dd($company);
@@ -58,6 +65,8 @@ class CompanyController extends Controller
 
     public function test($ticker)
     {
+//        dd(iexcloud::getHistoricData($ticker, '1w'));
+//        dd(iexcloud::BatchPreviousDayPrice($ticker));
         dd(iexcloud::previousDayPrice($ticker));
     }
 

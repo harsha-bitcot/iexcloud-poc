@@ -23,6 +23,14 @@ class iexcloud
         return $data->json();
     }
 
+    public static function getHistoricData($ticker, $range){
+        $url = 'https://cloud.iexapis.com/stable/stock/'. $ticker .'/chart/'. $range .'?token='. ENV('IEXCLOUD_API_KEY');
+//        $url = 'https://cloud.iexapis.com/stable/stock/'. $ticker .'/batch?types=chart&range='. $range .'&token='. ENV('IEXCLOUD_API_KEY');
+//        dd($url);
+        $data =  Http::get($url);
+        return $data->json();
+    }
+
     public static function previousDayPrice($ticker){
         $url = 'https://cloud.iexapis.com/stable/stock/'. $ticker .'/previous?token='. ENV('IEXCLOUD_API_KEY');
         $data =  Http::get($url);
@@ -30,7 +38,7 @@ class iexcloud
     }
 
     public static function BatchPreviousDayPrice($tickers){
-        $tickers = gettype($tickers) == 'array'? implode(",",$tickers) : $tickers;
+        $tickers = gettype($tickers) == 'string'? $tickers : implode(",",$tickers);
         $url = 'https://cloud.iexapis.com/stable/stock/market/batch?symbols='. $tickers .'&types=chart&last=1&token='. ENV('IEXCLOUD_API_KEY');
         $data =  Http::get($url);
         return $data->json();
