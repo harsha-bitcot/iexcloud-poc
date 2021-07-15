@@ -25,8 +25,6 @@ class iexcloud
 
     public static function getHistoricData($ticker, $range){
         $url = 'https://cloud.iexapis.com/stable/stock/'. $ticker .'/chart/'. $range .'?token='. ENV('IEXCLOUD_API_KEY');
-//        $url = 'https://cloud.iexapis.com/stable/stock/'. $ticker .'/batch?types=chart&range='. $range .'&token='. ENV('IEXCLOUD_API_KEY');
-//        dd($url);
         $data =  Http::get($url);
         return $data->json();
     }

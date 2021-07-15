@@ -66,7 +66,7 @@ class CompanyController extends Controller
     public function test($ticker)
     {
 //        dd(iexcloud::getHistoricData($ticker, '1w'));
-//        dd(iexcloud::BatchPreviousDayPrice($ticker));
+        dd(iexcloud::BatchPreviousDayPrice($ticker));
         dd(iexcloud::previousDayPrice($ticker));
     }
 

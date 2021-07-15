@@ -14,10 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('charts');
-//    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('charts');
+////    return view('welcome');
+//});
+
+Route::get('/', 'App\Http\Controllers\ChartController@index');
 
 Route::get('/company/find/{ticker}', 'App\Http\Controllers\CompanyController@findCompany');
 Route::get('/company/add/{ticker}', 'App\Http\Controllers\CompanyController@addCompany');

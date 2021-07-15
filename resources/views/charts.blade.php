@@ -20,6 +20,9 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
 </head>
 
 <body id="page-top">
@@ -123,13 +126,6 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
-                <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Charts</h1>
-                <p class="mb-4">Chart.js is a third party plugin that is used to generate the charts in this theme.
-                    The charts below have been customized - for further customization options, please visit the <a
-                        target="_blank" href="https://www.chartjs.org/docs/latest/">official Chart.js
-                        documentation</a>.</p>
-
                 <!-- Content Row -->
                 <div class="row">
 
@@ -138,32 +134,289 @@
                         <!-- Area Chart -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Area Chart</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">change percentage</h6>
                             </div>
                             <div class="card-body">
                                 <div class="chart-area">
                                     <canvas id="myAreaChart"></canvas>
                                 </div>
-                                <hr>
-                                Styling for the area chart can be found in the
-                                <code>/js/demo/chart-area-demo.js</code> file.
+{{--                                <hr>--}}
+{{--                                Styling for the area chart can be found in the--}}
+{{--                                <code>/js/demo/chart-area-demo.js</code> file.--}}
                             </div>
                         </div>
+
+                        <script>
+                            // Set new default font family and font color to mimic Bootstrap's default styling
+                            Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+                            Chart.defaults.global.defaultFontColor = '#858796';
+
+
+                            // change percentage Chart
+                            var ctx = document.getElementById("myAreaChart");
+                            var myLineChart = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: <?php echo $date; ?> ,
+                                    datasets: [{
+                                        label: "change percentage",
+                                        lineTension: 0.3,
+                                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                                        borderColor: "rgba(78, 115, 223, 1)",
+                                        pointRadius: 3,
+                                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                                        pointBorderColor: "rgba(78, 115, 223, 1)",
+                                        pointHoverRadius: 3,
+                                        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                                        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                                        pointHitRadius: 10,
+                                        pointBorderWidth: 2,
+                                        data: <?php echo $changePercent; ?>,
+                                    }],
+                                },
+                                options: {
+                                    maintainAspectRatio: false,
+                                    layout: {
+                                        padding: {
+                                            left: 10,
+                                            right: 25,
+                                            top: 25,
+                                            bottom: 0
+                                        }
+                                    },
+                                    scales: {
+                                        xAxes: [{
+                                            time: {
+                                                unit: 'date'
+                                            },
+                                            gridLines: {
+                                                display: false,
+                                                drawBorder: false
+                                            },
+                                            ticks: {
+                                                maxTicksLimit: 3
+                                            }
+                                        }],
+                                        yAxes: [{
+                                            ticks: {
+                                                maxTicksLimit: 5,
+                                                padding: 10,
+                                                // Include a dollar sign in the ticks
+                                                callback: function(value, index, values) {
+                                                    return value + ' %';
+                                                }
+                                            },
+                                            gridLines: {
+                                                color: "rgb(234, 236, 244)",
+                                                zeroLineColor: "rgb(234, 236, 244)",
+                                                drawBorder: false,
+                                                borderDash: [2],
+                                                zeroLineBorderDash: [2]
+                                            }
+                                        }],
+                                    },
+                                    legend: {
+                                        display: false
+                                    },
+                                    tooltips: {
+                                        backgroundColor: "rgb(255,255,255)",
+                                        bodyFontColor: "#858796",
+                                        titleMarginBottom: 10,
+                                        titleFontColor: '#6e707e',
+                                        titleFontSize: 14,
+                                        borderColor: '#dddfeb',
+                                        borderWidth: 1,
+                                        xPadding: 15,
+                                        yPadding: 15,
+                                        displayColors: false,
+                                        intersect: false,
+                                        mode: 'index',
+                                        caretPadding: 10,
+                                        callbacks: {
+                                            label: function(tooltipItem, chart) {
+                                                var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                                return datasetLabel + ' ' + tooltipItem.yLabel + ' %';
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+
+                        </script>
 
                         <!-- Bar Chart -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Overview</h6>
                             </div>
                             <div class="card-body">
                                 <div class="chart-bar">
                                     <canvas id="myBarChart"></canvas>
                                 </div>
-                                <hr>
-                                Styling for the bar chart can be found in the
-                                <code>/js/demo/chart-bar-demo.js</code> file.
+{{--                                <hr>--}}
+{{--                                Styling for the bar chart can be found in the--}}
+{{--                                <code>/js/demo/chart-bar-demo.js</code> file.--}}
                             </div>
                         </div>
+
+
+
+
+
+
+                        <script>
+                            // Set new default font family and font color to mimic Bootstrap's default styling
+                            Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+                            Chart.defaults.global.defaultFontColor = '#858796';
+
+
+                            // change percentage Chart
+                            var ctx = document.getElementById("myBarChart");
+                            var myLineChart = new Chart(ctx, {
+                                data: {
+                                    labels: <?php echo $date; ?> ,
+                                    datasets: [
+                                        {
+                                            type: 'line',
+                                            tension: 0,
+                                            steppedLine: 'middle',
+                                            label: 'Close',
+                                            yAxisID: 'left',
+                                            data: <?php echo $close; ?>,
+                                            borderColor: "rgba(0,255,0,0.64)",
+                                            fill: false,
+                                        },
+                                        {
+                                            type: 'line',
+                                            tension: 0,
+                                            steppedLine: 'middle',
+                                            label: 'Open',
+                                            yAxisID: 'left',
+                                            data: <?php echo $open; ?>,
+                                            borderColor: "rgb(255,0,0,0.64)",
+                                            fill: false,
+                                        },
+                                        {
+                                            type: 'bar',
+                                            label: 'Range',
+                                            yAxisID: 'left',
+                                            data: <?php echo $range; ?>,
+                                            backgroundColor: "rgba(0,255,217,0.34)",
+                                        },
+                                        {
+                                            type: 'scatter',
+                                            label: 'Change',
+                                            yAxisID: 'right',
+                                            data: <?php echo $change; ?>,
+                                            borderColor: "rgb(0,0,255)",
+                                        }
+                                    ],
+                                },
+                                options: {
+                                    maintainAspectRatio: false,
+                                    layout: {
+                                        padding: {
+                                            left: 10,
+                                            right: 25,
+                                            top: 25,
+                                            bottom: 0
+                                        }
+                                    },
+                                    scales: {
+                                        xAxes: [{
+                                            stacked: true,
+                                            time: {
+                                                unit: 'date'
+                                            },
+                                            gridLines: {
+                                                display: false,
+                                                drawBorder: false
+                                            },
+                                            ticks: {
+                                                maxTicksLimit: 3
+                                            }
+                                        }],
+                                        yAxes: [
+                                            {
+                                                id: 'left',
+                                                type: 'linear',
+                                                position: 'left',
+                                                scalePositionLeft: true,
+                                                ticks: {
+                                                    maxTicksLimit: 5,
+                                                    padding: 10,
+                                                    // Include a dollar sign in the ticks
+                                                    callback: function(value, index, values) {
+                                                        return value;
+                                                    }
+                                                },
+                                                gridLines: {
+                                                    color: "rgb(234, 236, 244)",
+                                                    zeroLineColor: "rgb(234, 236, 244)",
+                                                    drawBorder: false,
+                                                    borderDash: [2],
+                                                    zeroLineBorderDash: [2]
+                                                }
+                                            },
+                                            {
+                                                id: 'right',
+                                                type: 'linear',
+                                                position: 'right',
+                                                scalePositionLeft: false,
+                                                ticks: {
+                                                    maxTicksLimit: 5,
+                                                    padding: 10,
+                                                    // Include a dollar sign in the ticks
+                                                    callback: function(value, index, values) {
+                                                        return value;
+                                                    }
+                                                }
+                                            }
+                                        ],
+                                    },
+                                    legend: {
+                                        // display: false
+                                        position: 'bottom'
+                                    },
+                                    tooltips: {
+                                        backgroundColor: "rgb(255,255,255)",
+                                        bodyFontColor: "#858796",
+                                        titleMarginBottom: 10,
+                                        titleFontColor: '#6e707e',
+                                        titleFontSize: 14,
+                                        borderColor: '#dddfeb',
+                                        borderWidth: 1,
+                                        xPadding: 15,
+                                        yPadding: 15,
+                                        displayColors: false,
+                                        intersect: false,
+                                        mode: 'index',
+                                        caretPadding: 10,
+                                        callbacks: {
+                                            label: function(tooltipItem, chart) {
+                                                var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                                if (datasetLabel === 'Range'){
+                                                    let value = tooltipItem.value;
+                                                    value = value.slice(1,value.search(']'));
+                                                    value = value.split(", ");
+                                                    let response = ['Low: ' + value[0]];
+                                                    response.push('High: ' + value[1]);
+                                                    return response;
+                                                }
+                                                return datasetLabel + ' ' + tooltipItem.yLabel;
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+
+                        </script>
+
+
+
+
+
+
 
                     </div>
 
@@ -179,9 +432,9 @@
                                 <div class="chart-pie pt-4">
                                     <canvas id="myPieChart"></canvas>
                                 </div>
-                                <hr>
-                                Styling for the donut chart can be found in the
-                                <code>/js/demo/chart-pie-demo.js</code> file.
+{{--                                <hr>--}}
+{{--                                Styling for the donut chart can be found in the--}}
+{{--                                <code>/js/demo/chart-pie-demo.js</code> file.--}}
                             </div>
                         </div>
                     </div>
@@ -224,13 +477,13 @@
 <!-- Custom scripts for all pages-->
 <script src="js/sb-admin-2.min.js"></script>
 
-<!-- Page level plugins -->
-<script src="vendor/chart.js/Chart.min.js"></script>
+
 
 <!-- Page level custom scripts -->
-<script src="js/demo/chart-area-demo.js"></script>
+{{--<script src="js/demo/chart-area-demo.js"></script>--}}
 <script src="js/demo/chart-pie-demo.js"></script>
-<script src="js/demo/chart-bar-demo.js"></script>
+{{--<script src="js/demo/chart-bar-demo.js"></script>--}}
+
 
 </body>
 
