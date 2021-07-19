@@ -37,7 +37,8 @@ class iexcloud
 
     public static function BatchPreviousDayPrice($tickers){
         $tickers = gettype($tickers) == 'string'? $tickers : implode(",",$tickers);
-        $url = 'https://cloud.iexapis.com/stable/stock/market/batch?symbols='. $tickers .'&types=chart&last=1&token='. ENV('IEXCLOUD_API_KEY');
+//        $url = 'https://cloud.iexapis.com/stable/stock/market/batch?symbols='. $tickers .'&types=chart&last=1&token='. ENV('IEXCLOUD_API_KEY');
+        $url = 'https://cloud.iexapis.com/stable/stock/market/batch?symbols='. $tickers .'&types=chart&last=2&token='. ENV('IEXCLOUD_API_KEY'); // temp fix for 0 value for 4 columns
         $data =  Http::get($url);
         return $data->json();
     }

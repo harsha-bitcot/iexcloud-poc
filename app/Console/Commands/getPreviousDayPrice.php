@@ -53,26 +53,28 @@ class getPreviousDayPrice extends Command
             return false;
         }
         foreach ($companies as $company){
-            try {
-                $data = $batchData[$company->symbol]['chart'][0];
-            } catch (Exception $e){
-                $this->error('Daily data could not be recorded for '. $company->symbol . ' because of un-availability in iexcloud');
-                continue;
+            for ($i=0;$i<count($batchData[$company->symbol]['chart']);$i++){
+                try {
+                    $data = $batchData[$company->symbol]['chart'][$i];
+                } catch (Exception $e){
+                    $this->error('Daily data could not be recorded for '. $company->symbol . ' because of un-availability in iexcloud');
+                    continue;
+                }
+                try {
+                    $dailyData = dailyData::firstOrNew(
+                        ['company_symbol' => $data['symbol'], 'date' => $data['date']],
+                        ['close' => $data['close'], 'high' => $data['high'], 'low' => $data['low'], 'open' => $data['open'], 'volume' => $data['volume'], 'changeOverTime' => $data['changeOverTime'], 'marketChangeOverTime' => $data['marketChangeOverTime'], 'uOpen' => $data['uOpen'], 'uClose' => $data['uClose'], 'uHigh' => $data['uHigh'], 'uLow' => $data['uLow'], 'uVolume' => $data['uVolume'], 'fOpen' => $data['fOpen'], 'fClose' => $data['fClose'], 'fHigh' => $data['fHigh'], 'fLow' => $data['fLow'], 'fVolume' => $data['fVolume'], 'change' => $data['change'], 'changePercent' => $data['changePercent']]
+                    );
+                    $company->updateDailyData = false;
+                    $company->data()->save($dailyData);
+                    $company->save();
+                } catch (Exception $e){
+                    $this->error('Daily data could not be recorded for '. $company->symbol . ' because of:');
+                    $this->error($e);
+                    continue;
+                }
+                $this->info('Daily data successfully recorded for '. $company->symbol . ' on '. $dailyData->date);
             }
-            try {
-                $dailyData = dailyData::firstOrNew(
-                    ['company_symbol' => $data['symbol'], 'date' => $data['date']],
-                    ['close' => $data['close'], 'high' => $data['high'], 'low' => $data['low'], 'open' => $data['open'], 'volume' => $data['volume'], 'changeOverTime' => $data['changeOverTime'], 'marketChangeOverTime' => $data['marketChangeOverTime'], 'uOpen' => $data['uOpen'], 'uClose' => $data['uClose'], 'uHigh' => $data['uHigh'], 'uLow' => $data['uLow'], 'uVolume' => $data['uVolume'], 'fOpen' => $data['fOpen'], 'fClose' => $data['fClose'], 'fHigh' => $data['fHigh'], 'fLow' => $data['fLow'], 'fVolume' => $data['fVolume'], 'change' => $data['change'], 'changePercent' => $data['changePercent']]
-                );
-                $company->updateDailyData = false;
-                $company->data()->save($dailyData);
-                $company->save();
-            } catch (Exception $e){
-                $this->error('Daily data could not be recorded for '. $company->symbol . ' because of:');
-                $this->error($e);
-                continue;
-            }
-            $this->info('Daily data successfully recorded for '. $company->symbol . ' on '. $dailyData->date);
         }
         return true;
     }
