@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\company;
 use App\Models\dailyData;
 use App\Models\dataImport;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Utils\iexcloud;
 
@@ -13,6 +14,52 @@ class CompanyController extends Controller
     public function __construct()
     {
         //
+    }
+
+    Public function list(){
+        $companies = company::orderBy('updated_at', 'desc')->get();
+        return view('company', ['companies' => $companies]);
+    }
+
+    public function add(Request $request){
+        $this->validate(request(),[ // check for more validation rules
+            'ticker' => 'required'
+        ]);
+        $ticker = $request->input('ticker');
+        $company = company::find($ticker);
+        if ($company == null){
+            $company = iexcloud::getCompanyByTicker($ticker);
+            if ($company != null){
+                $company = company::create([
+                    'symbol' => $company['symbol'],
+                    'companyName' => $company['companyName'],
+                    'exchange' => $company['exchange'],
+                    'industry' => $company['industry'],
+                    'website' => $company['website'],
+                    'description' => $company['description'],
+                    'sector' => $company['sector'],
+                    'city' => $company['city'],
+                    'state' => $company['state'],
+                    'country' => $company['country']
+                ]);
+                $company->dataImport()->saveMany([
+//                    new dataImport(['range' => 'H12020']),
+//                    new dataImport(['range' => 'H22020']),
+//                    new dataImport(['range' => 'H120201']),
+                    new dataImport(['range' => 'H22021']),
+                ]);
+            }
+        }
+        return redirect('/companies');
+    }
+
+    Public function toggleStatus($ticker){
+        $company = company::find($ticker);
+        if ($company != null){
+            $company->status = !$company->status;
+            $company->save();
+        }
+        return redirect('/companies');
     }
 
     public function addData($ticker){
@@ -65,8 +112,8 @@ class CompanyController extends Controller
 
     public function test($ticker)
     {
-//        dd(iexcloud::getHistoricData($ticker, '1w'));
-        dd(iexcloud::BatchPreviousDayPrice($ticker));
+//        dd(iexcloud::getHistoricData($ticker, '3d'));
+//        dd(iexcloud::BatchPreviousDayPrice($ticker));
         dd(iexcloud::previousDayPrice($ticker));
     }
 

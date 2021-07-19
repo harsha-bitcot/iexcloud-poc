@@ -301,7 +301,7 @@
                                             label: 'Range',
                                             yAxisID: 'left',
                                             data: <?php echo $range; ?>,
-                                            backgroundColor: "rgba(0,255,217,0.34)",
+                                            backgroundColor: "rgba(0,255,217,0.62)",
                                         },
                                         {
                                             type: 'scatter',

@@ -20,6 +20,11 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::get('/', 'App\Http\Controllers\ChartController@index');
+Route::get('/companies', 'App\Http\Controllers\CompanyController@list');
+Route::get('/companies/status/toggle/{ticker}', 'App\Http\Controllers\CompanyController@toggleStatus');
+Route::post('/companies/add', 'App\Http\Controllers\CompanyController@add');
+
+
 
 Route::get('/company/find/{ticker}', 'App\Http\Controllers\CompanyController@findCompany');
 Route::get('/company/add/{ticker}', 'App\Http\Controllers\CompanyController@addCompany');
