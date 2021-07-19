@@ -65,9 +65,11 @@ class getPreviousDayPrice extends Command
                         ['company_symbol' => $data['symbol'], 'date' => $data['date']],
                         ['close' => $data['close'], 'high' => $data['high'], 'low' => $data['low'], 'open' => $data['open'], 'volume' => $data['volume'], 'changeOverTime' => $data['changeOverTime'], 'marketChangeOverTime' => $data['marketChangeOverTime'], 'uOpen' => $data['uOpen'], 'uClose' => $data['uClose'], 'uHigh' => $data['uHigh'], 'uLow' => $data['uLow'], 'uVolume' => $data['uVolume'], 'fOpen' => $data['fOpen'], 'fClose' => $data['fClose'], 'fHigh' => $data['fHigh'], 'fLow' => $data['fLow'], 'fVolume' => $data['fVolume'], 'change' => $data['change'], 'changePercent' => $data['changePercent']]
                     );
-                    $company->updateDailyData = false;
                     $company->data()->save($dailyData);
-                    $company->save();
+                    if ($i == count($batchData[$company->symbol]['chart']) - 1){
+                        $company->updateDailyData = false;
+                        $company->save();
+                    }
                 } catch (Exception $e){
                     $this->error('Daily data could not be recorded for '. $company->symbol . ' because of:');
                     $this->error($e);
