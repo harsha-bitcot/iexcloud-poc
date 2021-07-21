@@ -13,7 +13,7 @@
                             action="/companies/add" method="POST">
                                     @csrf
                                     <input type="text" name="ticker" placeholder="Add Company">
-                                    <button type="submit">
+                                    <button type="submit" class="btn-secondary">
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </form> </span>
@@ -53,9 +53,9 @@
                                 <td>
                                     <small>
                                         <a href="/companies/status/toggle/{{$company->symbol}}">Toggle Status</a> |
-                                        View Details |
-                                        View Data |
-                                        View Graphs
+                                        <a href="/companies/view/{{ $company->symbol }}">View Details</a>
+{{--                                        View Data |--}}
+{{--                                        View Graphs--}}
                                     </small>
                                 </td>
                             </tr>

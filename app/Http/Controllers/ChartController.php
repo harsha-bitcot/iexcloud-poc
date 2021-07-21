@@ -29,12 +29,24 @@ class ChartController extends Controller
         $newChangePercent = $changePercent->map(function ($item, $key) {
             return $item + rand(0,5);
         });
+        $changeCount = [0, 0];
+        $changeValue = [0, 0];
+        foreach ($change as $value){
+            if ($value>0){
+                $changeCount[0]++;
+                $changeValue[0] += $value;
+            }else{
+                $changeCount[1]++;
+                $changeValue[1] += $value;
+            }
+        }
         $range = array();
         for ($i=0; $i<$date->count(); $i++){
             array_push($range, [$low[$i], $high[$i]]);
         }
         return view('charts', ['date' => $date, 'changePercent' => $changePercent,
-            'close' => $close,'range' => collect($range),'open' => $open,'change' => $change,'newChangePercent' => $newChangePercent
+            'close' => $close,'range' => collect($range),'open' => $open,'change' => $change,'newChangePercent' => $newChangePercent,
+            'changeValue' => collect($changeValue), 'changeCount' => collect($changeCount)
         ]);
     }
 }

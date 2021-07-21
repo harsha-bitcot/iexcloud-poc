@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\company;
 use App\Models\dailyData;
 use App\Models\dataImport;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Utils\iexcloud;
@@ -18,7 +19,58 @@ class CompanyController extends Controller
 
     Public function list(){
         $companies = company::orderBy('updated_at', 'desc')->get();
-        return view('company', ['companies' => $companies]);
+        return view('company.list', ['companies' => $companies]);
+    }
+
+    public function view($ticker){
+        $company = company::find($ticker);
+        if ($company == null){
+            return redirect('/companies');
+        }
+//        dd($company->data()->previous52Weeks()->get()->groupBy(function ($val) {
+//            $date = Carbon::parse($val->date);
+//            return $date->startOfWeek()->isoFormat('MMM Do YY') . ' to '.$date->endOfWeek()->isoFormat('MMM Do YY');
+////            return $date->year . ', '.$date->weekOfYear . ': ' . $date->startOfWeek()->toFormattedDateString() . ' to '.$date->endOfWeek()->toFormattedDateString();
+//        })) ;// todo *******here
+        $previousMonthData = $this->parseData($company->data()->previousMonth()->get());
+        $previousFiftyTwoWeekData = $this->parseData($company->data()->previous52Weeks()->get());
+//        dd($previousMonthData);
+        return view('company.view', ['company' => $company,'previousMonthData'=>$previousMonthData,'previousFiftyTwoWeekData'=>$previousFiftyTwoWeekData]);
+    }
+
+    //todo check if this can be placed somewhere else
+    private function parseData($collection): array
+    {
+        $collection = $collection->sortBy('date');
+        $data = array();
+        $data['date'] = $collection->pluck('date')->map(function ($item, $key) {
+            return Carbon::createFromFormat('Y-m-d', $item)->toFormattedDateString();
+        });
+        $data['changePercent'] = $collection->pluck('changePercent');
+        $data['close'] = $collection->pluck('close');
+        $data['high'] = $collection->pluck('high');
+        $data['low'] = $collection->pluck('low');
+        $data['open'] = $collection->pluck('open');
+        $data['change'] = $collection->pluck('change');
+        $range = array();
+        for ($i=0; $i<$data['date']->count(); $i++){
+            array_push($range, [$data['low'][$i], $data['high'][$i]]);
+        }
+        $changeCount = [0, 0];
+        $changeValue = [0, 0];
+        foreach ($data['change'] as $value){
+            if ($value>0){
+                $changeCount[0]++;
+                $changeValue[0] += $value;
+            }else{
+                $changeCount[1]++;
+                $changeValue[1] += $value;
+            }
+        }
+        $data['range'] = collect($range);
+        $data['changeCount'] = collect($changeCount);
+        $data['changeValue'] = collect($changeValue);
+        return $data;
     }
 
     public function add(Request $request){

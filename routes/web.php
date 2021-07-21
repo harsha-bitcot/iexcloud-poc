@@ -23,6 +23,7 @@ Route::get('/', 'App\Http\Controllers\ChartController@index');
 Route::get('/companies', 'App\Http\Controllers\CompanyController@list');
 Route::get('/companies/status/toggle/{ticker}', 'App\Http\Controllers\CompanyController@toggleStatus');
 Route::post('/companies/add', 'App\Http\Controllers\CompanyController@add');
+Route::get('/companies/view/{ticker}', 'App\Http\Controllers\CompanyController@view');
 
 
 
