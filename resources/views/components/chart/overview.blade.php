@@ -84,7 +84,10 @@
                         drawBorder: false
                     },
                     ticks: {
-                        maxTicksLimit: 3
+                        maxTicksLimit: 3,
+                        callback: function(value, index, values) {
+                            return value.split(":")[0];
+                        }
                     }
                 }],
                 yAxes: [

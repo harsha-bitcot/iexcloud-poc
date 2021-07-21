@@ -27,14 +27,33 @@ class CompanyController extends Controller
         if ($company == null){
             return redirect('/companies');
         }
-//        dd($company->data()->previous52Weeks()->get()->groupBy(function ($val) {
-//            $date = Carbon::parse($val->date);
-//            return $date->startOfWeek()->isoFormat('MMM Do YY') . ' to '.$date->endOfWeek()->isoFormat('MMM Do YY');
-////            return $date->year . ', '.$date->weekOfYear . ': ' . $date->startOfWeek()->toFormattedDateString() . ' to '.$date->endOfWeek()->toFormattedDateString();
-//        })) ;// todo *******here
+        $weeklyData = $company->data()->previous52Weeks()->get()->groupBy(function ($val) {
+            $date = Carbon::parse($val->date);
+            return $date->startOfWeek()->isoFormat('YYYY[, ]Wo [week :] MMM Do') . ' to '.$date->endOfWeek()->isoFormat('MMM Do');
+//            return $date->year . ', '.$date->weekOfYear . ': ' . $date->startOfWeek()->toFormattedDateString() . ' to '.$date->endOfWeek()->toFormattedDateString();
+        });
+        $previousFiftyTwoWeekData = array();
+        foreach ($weeklyData as $key=>$value){
+            $data = array();
+            $data['date'] = $key;
+            $data['changePercent'] = $value->pluck('changePercent')->sum() + $value->pluck('changePercent')->reduce(function ($carry, $item) {
+                    return $carry * $item;
+                });
+            $data['close'] = $value->pluck('close')->last();
+            $data['high'] = $value->pluck('high')->max();
+            $data['low'] = $value->pluck('low')->min();
+            $data['open'] = $value->pluck('open')->first();
+            $data['change'] = $value->pluck('change')->sum();
+            array_push($previousFiftyTwoWeekData, collect($data));
+        }
+
+//        dd($previousFiftyTwoWeekData);
+//        dd($company->data()->previousMonth()->get());
         $previousMonthData = $this->parseData($company->data()->previousMonth()->get());
-        $previousFiftyTwoWeekData = $this->parseData($company->data()->previous52Weeks()->get());
 //        dd($previousMonthData);
+//        $previousFiftyTwoWeekData = $this->parseData($company->data()->previous52Weeks()->get());
+        $previousFiftyTwoWeekData = $this->parseData(collect($previousFiftyTwoWeekData));
+//        dd($previousFiftyTwoWeekData);
         return view('company.view', ['company' => $company,'previousMonthData'=>$previousMonthData,'previousFiftyTwoWeekData'=>$previousFiftyTwoWeekData]);
     }
 
@@ -43,9 +62,11 @@ class CompanyController extends Controller
     {
         $collection = $collection->sortBy('date');
         $data = array();
-        $data['date'] = $collection->pluck('date')->map(function ($item, $key) {
+
+        $data['date'] = Carbon::hasFormat($collection->pluck('date')[0],'Y-m-d') ? $collection->pluck('date')->map(function ($item, $key) {
             return Carbon::createFromFormat('Y-m-d', $item)->toFormattedDateString();
-        });
+        }) : $collection->pluck('date');
+
         $data['changePercent'] = $collection->pluck('changePercent');
         $data['close'] = $collection->pluck('close');
         $data['high'] = $collection->pluck('high');

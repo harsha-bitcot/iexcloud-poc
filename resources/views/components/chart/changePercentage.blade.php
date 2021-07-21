@@ -1,5 +1,6 @@
 <!-- Area Chart -->
 <?php
+    // todo add support to append text to title
     $chartId = $chartId ?? '';
     $chartTitle = $chartTitle ?? 'Change Percentage';
 ?>
@@ -62,7 +63,10 @@
                         drawBorder: false
                     },
                     ticks: {
-                        maxTicksLimit: 3
+                        maxTicksLimit: 3,
+                        callback: function(value, index, values) {
+                            return value.split(":")[0];
+                        }
                     }
                 }],
                 yAxes: [{
