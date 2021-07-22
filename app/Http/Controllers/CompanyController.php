@@ -27,13 +27,20 @@ class CompanyController extends Controller
         if ($company == null){
             return redirect('/companies');
         }
-        $weeklyData = $company->data()->previous52Weeks()->get()->groupBy(function ($val) {
-            $date = Carbon::parse($val->date);
-            return $date->startOfWeek()->isoFormat('YYYY[, ]Wo [week :] MMM Do') . ' to '.$date->endOfWeek()->isoFormat('MMM Do');
-//            return $date->year . ', '.$date->weekOfYear . ': ' . $date->startOfWeek()->toFormattedDateString() . ' to '.$date->endOfWeek()->toFormattedDateString();
-        });
-        $previousFiftyTwoWeekData = array();
-        foreach ($weeklyData as $key=>$value){
+        $previousMonthData = $this->parseData($company->data()->previousMonth()->get());
+        $fiftyTwoWeek = $company->data()->previous52Weeks();
+        $previousFiftyTwoWeekData = $this->parseData($fiftyTwoWeek->get());
+        $weeklyFiftyTwoWeekData = $this->parseData($this->prepareConsolidatedData($fiftyTwoWeek->getWeeklyConsolidated()));
+        $monthlyFiftyTwoWeekData = $this->parseData($this->prepareConsolidatedData($fiftyTwoWeek->getMonthlyConsolidated()));
+//        dd($previousFiftyTwoWeekData['high']->max());
+        return view('company.view', ['company' => $company,'previousMonthData'=>$previousMonthData,'previousFiftyTwoWeekData'=>$previousFiftyTwoWeekData,
+            'weeklyFiftyTwoWeekData'=>$weeklyFiftyTwoWeekData,'monthlyFiftyTwoWeekData'=>$monthlyFiftyTwoWeekData]);
+    }
+
+    private function prepareConsolidatedData($collection): \Illuminate\Support\Collection
+    {
+        $result = array();
+        foreach ($collection as $key=>$value){
             $data = array();
             $data['date'] = $key;
             $data['changePercent'] = $value->pluck('changePercent')->sum() + $value->pluck('changePercent')->reduce(function ($carry, $item) {
@@ -44,17 +51,9 @@ class CompanyController extends Controller
             $data['low'] = $value->pluck('low')->min();
             $data['open'] = $value->pluck('open')->first();
             $data['change'] = $value->pluck('change')->sum();
-            array_push($previousFiftyTwoWeekData, collect($data));
+            array_push($result, collect($data));
         }
-
-//        dd($previousFiftyTwoWeekData);
-//        dd($company->data()->previousMonth()->get());
-        $previousMonthData = $this->parseData($company->data()->previousMonth()->get());
-//        dd($previousMonthData);
-//        $previousFiftyTwoWeekData = $this->parseData($company->data()->previous52Weeks()->get());
-        $previousFiftyTwoWeekData = $this->parseData(collect($previousFiftyTwoWeekData));
-//        dd($previousFiftyTwoWeekData);
-        return view('company.view', ['company' => $company,'previousMonthData'=>$previousMonthData,'previousFiftyTwoWeekData'=>$previousFiftyTwoWeekData]);
+        return collect($result);
     }
 
     //todo check if this can be placed somewhere else
@@ -186,7 +185,7 @@ class CompanyController extends Controller
     public function test($ticker)
     {
 //        dd(iexcloud::getHistoricData($ticker, '3d'));
-//        dd(iexcloud::BatchPreviousDayPrice($ticker));
+        dd(iexcloud::BatchPreviousDayPrice($ticker));
         dd(iexcloud::previousDayPrice($ticker));
     }
 

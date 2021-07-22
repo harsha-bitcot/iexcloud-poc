@@ -74,7 +74,7 @@
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-3">
-                        <h6 class="m-0 text-center font-weight-bold text-primary">Past 52 weeks</h6>
+                        <h6 class="m-0 text-center font-weight-bold text-primary">Past 52 weeks <?php echo $previousFiftyTwoWeekData['high'][1]; ?></h6>
                     </div>
                 </div>
             </div>
@@ -84,6 +84,66 @@
                 <?php
                 $chartId = 'previousFiftyTwoWeek';
                 extract($previousFiftyTwoWeekData);
+                ?>
+                @include('components.chart.overview')
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-xl-8 col-lg-7">
+                @include('components.chart.changePercentage')
+            </div>
+
+            <div class="col-xl-4 col-lg-5">
+                @include('components.chart.change')
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3">
+                        <h6 class="m-0 text-center font-weight-bold text-primary">Past 52 weeks(Weekly)</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?php
+                $chartId = 'weeklyFiftyTwoWeek';
+                extract($weeklyFiftyTwoWeekData);
+                ?>
+                @include('components.chart.overview')
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-xl-8 col-lg-7">
+                @include('components.chart.changePercentage')
+            </div>
+
+            <div class="col-xl-4 col-lg-5">
+                @include('components.chart.change')
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3">
+                        <h6 class="m-0 text-center font-weight-bold text-primary">Past 52 weeks(Monthly)</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?php
+                $chartId = 'monthlyFiftyTwoWeek';
+                extract($monthlyFiftyTwoWeekData);
                 ?>
                 @include('components.chart.overview')
             </div>

@@ -18,6 +18,20 @@ class dailyData extends Model
     {
         return $query->orderBy('date', 'asc');
     }
+    public function scopeGetWeeklyConsolidated($query)
+    {
+        return $query->get()->groupBy(function ($val) {
+            $date = Carbon::parse($val->date);
+            return $date->startOfWeek()->isoFormat('YYYY[, ]Wo [week :] MMM Do') . ' to '.$date->endOfWeek()->isoFormat('MMM Do');
+        });
+    }
+    public function scopeGetMonthlyConsolidated($query)
+    {
+        return $query->get()->groupBy(function ($val) {
+            $date = Carbon::parse($val->date);
+            return $date->startOfMonth()->isoFormat('YYYY[, ]Mo [month :] MMMM');
+        });
+    }
     public function scopePreviousWeek($query)
     {
         return $query->whereBetween('date', [Carbon::now()->subDays(7)->toDateString(), Carbon::now()->toDateString()]);
