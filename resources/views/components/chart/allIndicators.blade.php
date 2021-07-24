@@ -80,7 +80,7 @@ $chartTitle = $chartTitle ?? 'All indicators';
 
 
 <script type="text/javascript">
-    Highcharts.getJSON('http://localhost:8000/chart/{{ $chartCompany }}/OHLCV', function (data) {
+    Highcharts.getJSON('<?php echo URL::to('/'); ?>/chart/{{ $chartCompany }}/OHLCV', function (data) {
         // split the data set into ohlc and volume
         var ohlc = [],
             volume = [],

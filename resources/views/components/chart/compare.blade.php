@@ -14,7 +14,7 @@ $chartTitle = $chartTitle ?? 'Top '.count($chartData).' Companies';
     <div class="card-footer">
         <ul>
             @foreach($chartData as $ticker)
-                <li>{{ $ticker }}: <a href="/charts/{{ $ticker }}">View Charts</a> | <a href="/companies/view/{{ $ticker }}">View Details</a> </li>
+                <li>{{ $ticker }}: <a href="<?php echo URL::to('/'); ?>/charts/{{ $ticker }}">View Charts</a> | <a href="/companies/view/{{ $ticker }}">View Details</a> </li>
             @endforeach
         </ul>
     </div>
