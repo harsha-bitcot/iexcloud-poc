@@ -59,8 +59,11 @@ class CompanyController extends Controller
     //todo check if this can be placed somewhere else
     private function parseData($collection): array
     {
-        $collection = $collection->sortBy('date');
         $data = array();
+        if ($collection->count() == 0){
+            return $data;
+        }
+        $collection = $collection->sortBy('date');
 
         $data['date'] = Carbon::hasFormat($collection->pluck('date')[0],'Y-m-d') ? $collection->pluck('date')->map(function ($item, $key) {
             return Carbon::createFromFormat('Y-m-d', $item)->toFormattedDateString();

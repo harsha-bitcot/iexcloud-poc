@@ -1,39 +1,21 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Highstock Example</title>
-
-    <style type="text/css">
-        #container {
-            max-height: 800px;
-            min-height: 75vh;
-        }
-    </style>
-</head>
-<body>
-<link rel="stylesheet" type="text/css" href="https://code.highcharts.com/css/stocktools/gui.css">
-<link rel="stylesheet" type="text/css" href="https://code.highcharts.com/css/annotations/popup.css">
-
-
-<script src="/code/highstock.js"></script>
-<script src="/code/modules/data.js"></script>
-
-<script src="/code/indicators/indicators-all.js"></script>
-<script src="/code/modules/drag-panes.js"></script>
-
-<script src="/code/modules/annotations-advanced.js"></script>
-<script src="/code/modules/price-indicator.js"></script>
-<script src="/code/modules/full-screen.js"></script>
-
-<script src="/code/modules/stock-tools.js"></script>
-
-<div id="container" class="chart"></div>
+<?php
+// todo add support to append text to title
+$chartTitle = $chartTitle ?? 'OHLCV';
+?>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary"><?php echo $chartTitle;?></h6>
+    </div>
+    <div class="card-body">
+        <div class="chart-area">
+            <div id="ohlvChart{{ $chartCompany }}" class="chart"></div>
+        </div>
+    </div>
+</div>
 
 
 <script type="text/javascript">
-    Highcharts.getJSON('http://localhost:8000/chart/twtr/OHLCV', function (data) {
+    Highcharts.getJSON('http://localhost:8000/chart/{{ $chartCompany }}/OHLCV', function (data) {
 
         // split the data set into ohlc and volume
         var ohlc = [],
@@ -41,19 +23,6 @@
             dataLength = data.length,
             i = 0;
 
-{{--        @foreach($data as $plot)--}}
-{{--        ohlc.push([--}}
-{{--            {{ \Carbon\Carbon::parse($plot->date)->isoFormat('x') }}, // the date--}}
-{{--            {{ $plot->open }}, // open--}}
-{{--            {{ $plot->high }}, // high--}}
-{{--            {{ $plot->low }}, // low--}}
-{{--            {{ $plot->close }} // close--}}
-{{--        ]);--}}
-{{--        volume.push([--}}
-{{--            {{ \Carbon\Carbon::parse($plot->date)->isoFormat('x') }}, // the date--}}
-{{--            {{ $plot->volume }} // the volume--}}
-{{--        ]);--}}
-{{--        @endforeach--}}
         for (i; i < dataLength; i += 1) {
             ohlc.push([
                 data[i][0], // the date
@@ -69,7 +38,7 @@
             ]);
         }
 
-        Highcharts.stockChart('container', {
+        Highcharts.stockChart('ohlvChart{{ $chartCompany }}', {
             yAxis: [{
                 labels: {
                     align: 'left'
@@ -120,13 +89,13 @@
             },
             series: [{
                 type: 'ohlc',
-                id: 'aapl-ohlc',
-                name: 'AAPL Stock Price',
+                id: '{{ $chartCompany }}-ohlc',
+                name: '{{ $chartCompany }} Stock Price',
                 data: ohlc
             }, {
                 type: 'column',
-                id: 'aapl-volume',
-                name: 'AAPL Volume',
+                id: '{{ $chartCompany }}-volume',
+                name: '{{ $chartCompany }} Volume',
                 data: volume,
                 yAxis: 1
             }],
@@ -146,5 +115,3 @@
     });
 
 </script>
-</body>
-</html>

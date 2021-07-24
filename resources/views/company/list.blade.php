@@ -53,7 +53,8 @@
                                 <td>
                                     <small>
                                         <a href="/companies/status/toggle/{{$company->symbol}}">Toggle Status</a> |
-                                        <a href="/companies/view/{{ $company->symbol }}">View Details</a>
+                                        <a href="/companies/view/{{ $company->symbol }}">View Details</a> |
+                                        <a href="/charts/{{ $company->symbol }}">View Charts</a>
 {{--                                        View Data |--}}
 {{--                                        View Graphs--}}
                                     </small>

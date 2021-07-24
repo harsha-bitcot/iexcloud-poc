@@ -19,6 +19,18 @@ use Illuminate\Support\Facades\Route;
 ////    return view('welcome');
 //});
 
+Route::get('/email/redirect', 'App\Http\Controllers\ChartController@redirect');
+Route::get('/email/token', 'App\Http\Controllers\ChartController@token');
+Route::get('/email/consent', 'App\Http\Controllers\ChartController@consent');
+Route::get('/email/consent/trigger', 'App\Http\Controllers\ChartController@triggerConsent');
+
+
+Route::get('/dd', 'App\Http\Controllers\ChartController@getDummyData');
+Route::get('/chart/{ticker}/OHLCV', 'App\Http\Controllers\ChartController@getOHLCV');
+
+Route::get('/charts/{ticker}', 'App\Http\Controllers\ChartController@companyCharts');
+
+
 Route::get('/', 'App\Http\Controllers\ChartController@index');
 Route::get('/companies', 'App\Http\Controllers\CompanyController@list');
 Route::get('/companies/status/toggle/{ticker}', 'App\Http\Controllers\CompanyController@toggleStatus');

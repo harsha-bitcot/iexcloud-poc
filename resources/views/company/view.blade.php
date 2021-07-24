@@ -34,6 +34,7 @@
                         <p><span class="text-primary">exchange:</span> {{ $company->exchange }}</p>
                         <p><span class="text-primary">industry:</span> {{ $company->industry }}</p>
                         <p><span class="text-primary">website:</span> {{ $company->website }}</p>
+                        <p><span class="text-primary">previous 52 week high:</span> {{ $previousFiftyTwoWeekData['high']->max() }}</p>
                     </div>
                 </div>
             </div>
@@ -74,7 +75,7 @@
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-3">
-                        <h6 class="m-0 text-center font-weight-bold text-primary">Past 52 weeks <?php echo $previousFiftyTwoWeekData['high'][1]; ?></h6>
+                        <h6 class="m-0 text-center font-weight-bold text-primary">Past 52 weeks</h6>
                     </div>
                 </div>
             </div>

@@ -23,6 +23,22 @@
     <!-- Custom styles for this page -->
     <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('https://code.highcharts.com/css/stocktools/gui.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('https://code.highcharts.com/css/annotations/popup.css') }}">
+
+
+    <script src="{{ asset('/code/highstock.js') }}"></script>
+    <script src="{{ asset('/code/modules/data.js') }}"></script>
+
+    <script src="{{ asset('/code/indicators/indicators-all.js') }}"></script>
+    <script src="{{ asset('/code/modules/drag-panes.js') }}"></script>
+
+    <script src="{{ asset('/code/modules/annotations-advanced.js') }}"></script>
+    <script src="{{ asset('/code/modules/price-indicator.js') }}"></script>
+    <script src="{{ asset('/code/modules/full-screen.js') }}"></script>
+
+    <script src="{{ asset('/code/modules/stock-tools.js') }}"></script>
     <!-- Page level plugins -->
     <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
 </head>
