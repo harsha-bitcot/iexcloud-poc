@@ -90,7 +90,7 @@ $chartTitle = $chartTitle ?? 'Top '.count($chartData).' Companies';
 
     @foreach($chartData as $ticker)
     Highcharts.getJSON(
-        'http://localhost:8000/chart/{{ $ticker }}/close',
+        '<?php echo URL::to('/'); ?>/chart/{{ $ticker }}/close',
         success
     );
     @endforeach
