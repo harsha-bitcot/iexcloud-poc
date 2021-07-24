@@ -1,38 +1,40 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Highstock Example</title>
+<?php
+$chartId = $chartId ?? '';
+$chartTitle = $chartTitle ?? 'Top '.count($chartData).' Companies';
+?>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary"><?php echo $chartTitle;?></h6>
+    </div>
+    <div class="card-body" style="min-height: 420px; min-width: 310px">
+        <div class="chart-bar">
+            <div id="compareChart"></div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <ul>
+            @foreach($chartData as $ticker)
+                <li>{{ $ticker }}: <a href="/charts/{{ $ticker }}">View Charts</a> | <a href="/companies/view/{{ $ticker }}">View Details</a> </li>
+            @endforeach
+        </ul>
+    </div>
+</div>
 
-    <style type="text/css">
 
-    </style>
-</head>
-<body>
-<script src="../../code/highstock.js"></script>
-<script src="../../code/modules/data.js"></script>
-<script src="../../code/modules/exporting.js"></script>
-<script src="../../code/modules/export-data.js"></script>
-
-
-<div id="container" style="height: 400px; min-width: 310px"></div>
 
 
 <script type="text/javascript">
     var seriesOptions = [],
         seriesCounter = 0,
         names = @json($chartData);
-        // names = ['MSFT', 'AAPL', 'WK'];
 
-        // console.log();
     /**
      * Create the chart when all data is loaded
      * @returns {undefined}
      */
     function createChart() {
 
-        Highcharts.stockChart('container', {
+        Highcharts.stockChart('compareChart', {
 
             rangeSelector: {
                 selected: 4
@@ -87,11 +89,9 @@
     }
 
     @foreach($chartData as $ticker)
-        Highcharts.getJSON(
-            'http://localhost:8000/chart/{{ $ticker }}/close',
-            success
-        );
+    Highcharts.getJSON(
+        'http://localhost:8000/chart/{{ $ticker }}/close',
+        success
+    );
     @endforeach
 </script>
-</body>
-</html>

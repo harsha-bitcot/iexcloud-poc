@@ -7,9 +7,7 @@ $chartTitle = $chartTitle ?? 'OHLCV';
         <h6 class="m-0 font-weight-bold text-primary"><?php echo $chartTitle;?></h6>
     </div>
     <div class="card-body">
-        <div class="chart-area">
-            <div id="ohlvChart{{ $chartCompany }}" class="chart"></div>
-        </div>
+            <div id="ohlvChart{{ $chartCompany }}"></div>
     </div>
 </div>
 

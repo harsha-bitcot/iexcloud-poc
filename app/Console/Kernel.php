@@ -30,18 +30,18 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-//        $schedule->command('iex:previousDay')->withoutOverlapping(15)->everyMinute()->appendOutputTo(storage_path('logs/previousDay.log'))->when(function () {
-//            return company::where('updateDailyData', true)->count()>0;
-//        });
-//        $schedule->command('iex:checkForNewData')->hourlyAt(20)->days([2, 3, 4, 5, 6])->between('8:00', '11:30')->appendOutputTo(storage_path('logs/newDataCheck.log'))->when(function () {
-//            return !Cache::has('iexDailyUpdated');
-//        });
+        $schedule->command('iex:previousDay')->withoutOverlapping(15)->everyMinute()->appendOutputTo(storage_path('logs/previousDay.log'))->when(function () {
+            return company::where('updateDailyData', true)->count()>0;
+        });
+        $schedule->command('iex:checkForNewData')->hourlyAt(20)->days([2, 3, 4, 5, 6])->between('8:00', '11:30')->appendOutputTo(storage_path('logs/newDataCheck.log'))->when(function () {
+            return !Cache::has('iexDailyUpdated');
+        });
 //        $schedule->command('iex:checkForNewData')->everyMinute()->appendOutputTo(storage_path('logs/newDataCheck.log'))->when(function () {
 //            return !Cache::has('iexDailyUpdated');
 //        });
-//        $schedule->command('iex:historicData')->withoutOverlapping(15)->everyMinute()->appendOutputTo(storage_path('logs/historic.log'))->when(function () {
-//            return dataImport::where('import', true)->count()>0;
-//        });
+        $schedule->command('iex:historicData')->withoutOverlapping(15)->everyMinute()->appendOutputTo(storage_path('logs/historic.log'))->when(function () {
+            return dataImport::where('import', true)->count()>0;
+        });
     }
 
     /**

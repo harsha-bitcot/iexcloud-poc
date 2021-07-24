@@ -1,6 +1,10 @@
 @extends('layouts.layout')
 @section('title', $company->companyName)
 
+@section('quickNav')
+    <a href="/charts/{{ $company->symbol }}">View Charts</a>
+@endsection
+
 @section('content')
     <!-- Begin Page Content -->
     <div class="container-fluid">

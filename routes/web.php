@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Http;
+//use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,14 +19,8 @@ use Illuminate\Support\Facades\Route;
 ////    return view('welcome');
 //});
 
-Route::get('/email/redirect', 'App\Http\Controllers\ChartController@redirect');
-Route::get('/email/token', 'App\Http\Controllers\ChartController@token');
-Route::get('/email/consent', 'App\Http\Controllers\ChartController@consent');
-Route::get('/email/consent/trigger', 'App\Http\Controllers\ChartController@triggerConsent');
-
-
-Route::get('/dd', 'App\Http\Controllers\ChartController@getDummyData');
 Route::get('/chart/{ticker}/OHLCV', 'App\Http\Controllers\ChartController@getOHLCV');
+Route::get('/chart/{ticker}/close', 'App\Http\Controllers\ChartController@getClose');
 
 Route::get('/charts/{ticker}', 'App\Http\Controllers\ChartController@companyCharts');
 
@@ -39,11 +33,11 @@ Route::get('/companies/view/{ticker}', 'App\Http\Controllers\CompanyController@v
 
 
 
-Route::get('/company/find/{ticker}', 'App\Http\Controllers\CompanyController@findCompany');
-Route::get('/company/add/{ticker}', 'App\Http\Controllers\CompanyController@addCompany');
-Route::get('/data/add/{ticker}', 'App\Http\Controllers\CompanyController@addData');
+//Route::get('/company/find/{ticker}', 'App\Http\Controllers\CompanyController@findCompany');
+//Route::get('/company/add/{ticker}', 'App\Http\Controllers\CompanyController@addCompany');
+//Route::get('/data/add/{ticker}', 'App\Http\Controllers\CompanyController@addData');
 
-Route::get('/test/{ticker}', 'App\Http\Controllers\CompanyController@test');
-Route::get('/market', 'App\Http\Controllers\CompanyController@market');
-Route::get('/historic/{ticker}', 'App\Http\Controllers\CompanyController@historic');
+//Route::get('/test/{ticker}', 'App\Http\Controllers\CompanyController@test');
+//Route::get('/market', 'App\Http\Controllers\CompanyController@market');
+//Route::get('/historic/{ticker}', 'App\Http\Controllers\CompanyController@historic');
 

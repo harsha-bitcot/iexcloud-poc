@@ -10,6 +10,32 @@
     <meta name="author" content="">
 
     <title>POC - @yield('title')</title>
+    <style type="text/css">
+        .selectors-container {
+            background: #f2f2f2;
+            margin-bottom: 1rem;
+            font-size: 0;
+        }
+
+        .selectors-container .col {
+            font-size: 1.2rem;
+            width: calc(50% - 1em);
+            padding: 0.5em;
+            display: inline-block;
+        }
+
+        .selectors-container select {
+            width: 100%;
+            font-size: 16px; /* prevent page zoom in iOS */
+        }
+
+        @media (max-width: 768px) {
+            .selectors-container .col {
+                display: block;
+                width: calc(100% - 1em);
+            }
+        }
+    </style>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -30,6 +56,8 @@
 
     <script src="{{ asset('/code/highstock.js') }}"></script>
     <script src="{{ asset('/code/modules/data.js') }}"></script>
+    <script src="{{ asset('/code/modules/exporting.js') }}"></script>
+    <script src="{{ asset('/code/modules/export-data.js') }}"></script>
 
     <script src="{{ asset('/code/indicators/indicators-all.js') }}"></script>
     <script src="{{ asset('/code/modules/drag-panes.js') }}"></script>
@@ -117,7 +145,7 @@
 
             <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
-
+                    <li>@yield('quickNav')</li>
                     <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                     {{--                    <li class="nav-item dropdown no-arrow d-sm-none">--}}
                     {{--                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"--}}
