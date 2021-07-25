@@ -116,7 +116,7 @@ class CompanyController extends Controller
                     'state' => $company['state'],
                     'country' => $company['country']
                 ]);
-                $companyList = array("AMZN", "GOOG", "GOOGL", "AAPL", "TWTR", "MSFT", "FB", "TSLA", "NVDA", "JPM", "JNJ", "V", "PYPL", "DIS", "NFLX", "CSCO", "PEP", "AVGO", "WMT", "WFC", "MCD", "TXN");
+                $companyList = array("AMZN", "ACRX", "ADTN", "DNLI", "DORM");
                 if (in_array($company['symbol'], $companyList)) {
                     $company->dataImport()->saveMany([
                         new dataImport(['range' => 'H12020']),
