@@ -71,7 +71,7 @@ class ChartController extends Controller
 
     public function index(){
         $latestDate = dailyData::orderBy('date', 'desc')->first()->date;
-        $topThree = dailyData::where('date', $latestDate)->orderBy('close', 'desc')->limit(3)->get()->pluck('company_symbol')->toArray();
+        $topThree = dailyData::where('date', $latestDate)->orderBy('close', 'desc')->limit(3)->get()->pluck('company_symbol')->sortDesc()->toArray();
         return view('chart.index', ['topThree' => $topThree]);
     }
 }
