@@ -28,7 +28,7 @@ class CompanyController extends Controller
             return redirect('/companies');
         }
         $previousMonthData = $this->parseData($company->data()->previousMonth()->get());
-        $fiftyTwoWeek = $company->data()->previous52Weeks();
+        $fiftyTwoWeek = $company->data()->previous52Weeks()->chronological();
         $previousFiftyTwoWeekData = $this->parseData($fiftyTwoWeek->get());
         $weeklyFiftyTwoWeekData = $this->parseData($this->prepareConsolidatedData($fiftyTwoWeek->getWeeklyConsolidated()));
         $monthlyFiftyTwoWeekData = $this->parseData($this->prepareConsolidatedData($fiftyTwoWeek->getMonthlyConsolidated()));
@@ -62,7 +62,7 @@ class CompanyController extends Controller
         if ($collection->count() == 0){
             return $data;
         }
-        $collection = $collection->sortBy('date');
+//        $collection = $collection->sortBy('date');
 
         $data['date'] = Carbon::hasFormat($collection->pluck('date')[0],'Y-m-d') ? $collection->pluck('date')->map(function ($item, $key) {
             return Carbon::createFromFormat('Y-m-d', $item)->toFormattedDateString();
