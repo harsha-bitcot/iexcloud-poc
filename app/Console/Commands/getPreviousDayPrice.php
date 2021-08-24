@@ -65,7 +65,34 @@ class getPreviousDayPrice extends Command
                         ['company_symbol' => $data['symbol'], 'date' => $data['date']],
                         ['close' => $data['close'], 'high' => $data['high'], 'low' => $data['low'], 'open' => $data['open'], 'volume' => $data['volume'], 'changeOverTime' => $data['changeOverTime'], 'marketChangeOverTime' => $data['marketChangeOverTime'], 'uOpen' => $data['uOpen'], 'uClose' => $data['uClose'], 'uHigh' => $data['uHigh'], 'uLow' => $data['uLow'], 'uVolume' => $data['uVolume'], 'fOpen' => $data['fOpen'], 'fClose' => $data['fClose'], 'fHigh' => $data['fHigh'], 'fLow' => $data['fLow'], 'fVolume' => $data['fVolume'], 'change' => $data['change'], 'changePercent' => $data['changePercent']]
                     );
-                    $company->data()->save($dailyData);
+                    if ($dailyData->id === null){
+                        $company->data()->save($dailyData);
+                    } else{
+                        $dailyData->close = $data['close'];
+                        $dailyData->high = $data['high'];
+                        $dailyData->low = $data['low'];
+                        $dailyData->open = $data['open'];
+                        $dailyData->volume = $data['volume'];
+                        $dailyData->changeOverTime = $data['changeOverTime'];
+                        $dailyData->marketChangeOverTime = $data['marketChangeOverTime'];
+                        $dailyData->uOpen = $data['uOpen'];
+                        $dailyData->uClose = $data['uClose'];
+                        $dailyData->uHigh = $data['uHigh'];
+                        $dailyData->uLow = $data['uLow'];
+                        $dailyData->uVolume = $data['uVolume'];
+                        $dailyData->fOpen = $data['fOpen'];
+                        $dailyData->fClose = $data['fClose'];
+                        $dailyData->fHigh = $data['fHigh'];
+                        $dailyData->fLow = $data['fLow'];
+                        $dailyData->fVolume = $data['fVolume'];
+                        $dailyData->change = $data['change'];
+                        $dailyData->changePercent = $data['changePercent'];
+//                        dd($data);
+//                        foreach ($data as $key=>$value){
+//                            $dailyData->$key = $value;
+//                        }
+                        $dailyData->save();
+                    }
                     if ($i == count($batchData[$company->symbol]['chart']) - 1){
                         $company->updateDailyData = false;
                         $company->save();
